@@ -1,20 +1,34 @@
-# name
-name: hello, world
-
-# trigger
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-# one or more jobs
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  greet:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Greet the world
-        run: echo "Hello, world! $(date)"
-      
+      - id: s00
+        # running some shell bash cmd
+        run: echo "#(date), ${GITHUB_OUTPUT}"
+      - id: s01
+        # create a value and pass to the next step
+        run: echo "CURR_DATE=$(date)" >> $GITHUB_OUTPUT
+      - id: s02
+        uses: mscoutermarsh/cowsays-action@master
+        with:
+          args: "CURR_DATE=$(date)"
+          text: "moo moo cow! ${{ steps.s01.outputs.CURR_DATE }}, ${{ github.ref}}, ${{ github.repository}}"
+          color: green
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event. $(date)"
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: |
+          echo "🖥️ The workflow is now ready to test your code on the runner."
+          echo "CURR_DATE=$(date)" >> $GITHUB_OUTPUT
+      - name: List files in the repository
+        run: |
+      # Removed invalid duration usage; no direct way to get job duration in GitHub Actions context
+      - run: echo "⏱️ Job duration tracking is not available in this context."
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "⏱️ This job took $(( ${{ github.job }}.duration )) seconds to complete."
