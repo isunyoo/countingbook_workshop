@@ -1,0 +1,19 @@
+name: build_countingbook_app
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Countingbook App
+    runs-on: ubuntu-latest
+
+    steps:
+    - id: s01
+      run: echo "github ${{ github.ref}}"
